@@ -2,10 +2,12 @@
 
 # Create folder and open in vs code
 
-if ! [ -z "$1" ]
+readonly FOLDERNAME=$1
+
+if ! [ -z "$FOLDERNAME" ]
 then
-	mkdir $1
-	cd $1
+	mkdir FOLDERNAME$
+	cd FOLDERNAME$
 	code .
 else
 	echo "This script receives a directory name, e.g: folder"

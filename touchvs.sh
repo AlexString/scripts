@@ -2,10 +2,12 @@
 
 # Create file and open file in vs code
 
-if ! [ -z "$1" ]
+readonly FILENAME=$1
+
+if ! [ -z "$FILENAME" ]
 then
-	touch $1
-	code $1
+	touch $FILENAME 
+	code $FILENAME 
 else
 	echo "This script receives a filename, e.g: text.txt"
 fi

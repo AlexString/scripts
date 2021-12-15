@@ -2,9 +2,10 @@
 
 # cleans download folder
 
-function askYesNo {
-        QUESTION=$1
-        DEFAULT=$2
+function ask_yes_no {
+        local readonly QUESTION=$1
+        local readonly DEFAULT=$2
+
         if [ "$DEFAULT" = true ]; then
                 OPTIONS="[Y/n]"
                 DEFAULT="y"
@@ -26,11 +27,11 @@ function deletefiles {
 	echo "files have been deleted."
 }
 
-askYesNo "Clean files from downloads folder?" true
+ask_yes_no "Clean files from downloads folder?" true
 DESITION=$ANSWER
 
 if [ "$DESITION" = true ]; then
-	askYesNo "This will only delete all files in Downloads folder, are you sure?" false
+	ask_yes_no "This will only delete all files in Downloads folder, are you sure?" false
 	CONFIRM=$ANSWER
 	if [ "$CONFIRM" = true ]; then
 		deletefiles

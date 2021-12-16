@@ -1,30 +1,47 @@
 #!/bin/bash
 
-# Author: https://github.com/bdelphin
-# Repository: https://github.com/bdelphin/scripts/blob/master/xrandr_mode.sh
+# Author: AlexString
+# Description: This script handles HDMI multiple screen in 3 ways: normal_mode, hdmi_mode, hdmi_only
 
-if [ "$#" -ne 1 ]; then
-    echo "Please provide the mode to switch to. Candidates are : extended1080 normal"
-    exit
-fi
+switch_individual_displays(){
+    local screen_off=$1
+    local screen_on=$2 
 
-if [ "$1" == "extended1080" ]; then
-#    xrandr --dpi 200 --fb 7680x2160 --output eDP1 --mode 3840x2160 --output HDMI1 --mode 1920x1080 --scale 2x2 --pos 3840x0
-    xrandr --dpi 200 --output eDP1 --auto --output HDMI1 --right-of eDP1 --mode 1920x1080 --scale 2x2
-    echo "xrandr switching to extended1080 mode ..."
-fi
+    xrandr --output $screen_off --off
+    xrandr --dpi 200 --output $screen_on --auto
+}
 
-if [ "$1" == "extended_4k" ]; then
-    xrandr --dpi 200 --output eDP1 --auto --output HDMI1 --right-of eDP1 --auto
-    echo "xrandr switching to extended1080 mode ..."
-fi
+turn_on_hdmi(){
+    local hdmi_screen=$1
+    local intern_screen=$2
 
-if [ "$1" == "normal" ]; then
-    xrandr --output HDMI1 --off
-    xrandr --dpi 200 --output eDP1 --auto
-    #polybar hdmi &
-    echo "xrandr switching to normal mode ..."
-fi
+    xrandr --output $intern_screen --auto --output $hdmi_screen --right-of $intern_screen --auto
+}
 
-exec $HOME/.config/polybar/launch.sh
+readonly INTERN_MONITOR="eDP-1"
+readonly EXTERN_MONITOR="HDMI-1"
+readonly MODE=$1
 
+case $MODE in 
+    "normal_mode")
+        echo "xrandr switching to normal mode ..."
+        switch_individual_displays $EXTERN_MONITOR $INTERN_MONITOR
+    ;;
+    "hdmi_mode")
+        echo "xrandr switching to extend_hdmi mode ..."
+        turn_on_hdmi $EXTERN_MONITOR $INTERN_MONITOR
+    ;;
+    "hdmi_only")
+        echo "xrandr switching to hdmi_only mode ..."
+        switch_individual_displays $INTERN_MONITOR $EXTERN_MONITOR
+    ;;
+    *)
+        echo "Modes available:"
+        echo -e "normal_mode\nhdmi_mode\nhdmi_only"
+        exit 0
+    ;;
+esac
+
+echo "launching polybar"
+sleep 3
+exec ~/.config/polybar/launch.sh

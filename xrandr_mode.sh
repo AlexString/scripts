@@ -26,7 +26,6 @@ show_options(){
 ask_option(){
     echo -n "choose a mode (#): "
     read
-    return ${REPLY}
 }
 
 # Change this according to your monitors
@@ -37,7 +36,8 @@ MODE=$1
 
 if [ "$#" -eq 0 ]; then
     show_options
-    MODE=$(ask_option)
+    ask_option
+    MODE=$REPLY
 fi
 
 case $MODE in 

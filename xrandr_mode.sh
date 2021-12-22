@@ -19,7 +19,6 @@ turn_on_hdmi(){
 }
 
 show_options(){
-    echo "Available modes:"
     echo -e "1)normal_mode\n2)hdmi_mode\n3)hdmi_only\n4)mirrored"
 }
 
@@ -35,6 +34,7 @@ readonly EXTERN_MONITOR="HDMI-1"
 MODE=$1
 
 if [ "$#" -eq 0 ]; then
+    echo "Available modes:"
     show_options
     ask_option
     MODE=$REPLY
@@ -57,7 +57,12 @@ case $MODE in
         echo "xrandr mirrored mode ..."
         #TODO
     ;;
-    *) exit 0 ;;
+    *) 
+        echo "Wrong option (?)"
+        echo "try these modes:"
+        show_options
+        exit 0 
+    ;;
 esac
 
 #echo "launching polybar"

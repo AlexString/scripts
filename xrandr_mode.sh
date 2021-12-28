@@ -33,6 +33,7 @@ readonly EXTERN_MONITOR="HDMI-1"
 #
 MODE=$1
 
+# If no argument sent, ask for option
 if [ "$#" -eq 0 ]; then
     echo "Available modes:"
     show_options
